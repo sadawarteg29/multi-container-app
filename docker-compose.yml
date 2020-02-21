@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+    frontend:
+        build:
+            context: ./frontend
+            dockerfile: Dockerfile
+        labels:
+            - "com.example.description=Frontent Student webapp"
+            - "com.example.language=Angular 8"
+        ports:
+            - "80:80"
+        volumes:
+            - angular_frontend:/usr/share/nginx/html
+        depends_on:
+            - backend_proxy
+            - backend
+        networks:
+            - student_network
+
+    backend_proxy:
+        build:
+            context: ./backend_proxy
+            dockerfile: Dockerfile
+        ports:
+            - "8000:80"
+        depends_on:
+            - backend
+        networks:
+            - student_network
+
+    backend:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        labels:
+            - "com.example.description=Backend Student webapp"
+            - "com.example.language=Node JS"
+        ports:
+            - "3000:3000"
+        volumes:
+            - node_backend:/app
+        environment:
+            DATABASE_URL: "mysql://user@multi-container-app-database.ctyqxss3tpe4.us-east-1.rds.amazonaws.com/name_db"
+            MYSQL_HOST: "multi-container-app-database.ctyqxss3tpe4.us-east-1.rds.amazonaws.com"
+            MYSQL_DATABASE: "name_db"
+            MYSQL_USER: "admin"
+            MYSQL_PASSWORD: "NPbBBcKHhbHg54uk"
+        networks: 
+            - student_network
+
+volumes:
+    node_backend:
+    angular_frontend:
+
+networks:
+    student_network:

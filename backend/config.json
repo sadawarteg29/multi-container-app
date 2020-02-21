@@ -1,0 +1,10 @@
+{
+  "dev": {
+    "driver": "mysql",
+    "host": "multi-container-app-database.ctyqxss3tpe4.us-east-1.rds.amazonaws.com",
+    "user": "admin",
+    "database": "name_db",
+    "password": "NPbBBcKHhbHg54uk",
+    "dialect": "mysql"
+  }
+}
