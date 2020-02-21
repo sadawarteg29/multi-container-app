@@ -1,0 +1,35 @@
+os: linux
+services:
+    - docker
+branches:
+    only:
+        - master
+
+before_install:
+    - eval $(aws ecr get-login --no-include-email --region us-east-1)
+
+script:
+    - docker build -t backend_app ./backend
+    - docker tag backend_app:latest 335237141106.dkr.ecr.us-east-1.amazonaws.com/backend_app:latest
+    - docker build -t backend_proxy ./backend_proxy
+    - docker tag backend_proxy:latest 335237141106.dkr.ecr.us-east-1.amazonaws.com/backend_proxy:latest
+    - docker build -t frontend_app ./frontend
+    - docker tag frontend_app:latest 335237141106.dkr.ecr.us-east-1.amazonaws.com/frontend_app:latest  
+
+after_success:
+    - docker push 335237141106.dkr.ecr.us-east-1.amazonaws.com/backend_app:latest
+    - docker push 335237141106.dkr.ecr.us-east-1.amazonaws.com/backend_proxy:latest
+    - docker push 335237141106.dkr.ecr.us-east-1.amazonaws.com/frontend_app:latest
+
+deploy:
+    edge: true
+    provider: elasticbeanstalk
+    region: "us-east-2"
+    app: "Multi Container App"
+    env: "MultiContainerApp-env"
+    bucket_name: "elasticbeanstalk-us-east-1-335237141106"
+    bucket_path: "Multi Container App"
+    on:
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
