@@ -3,7 +3,7 @@
     "containerDefinition": [
         {
             "name": "backend",
-            "image": "",
+            "image": "335237141106.dkr.ecr.us-east-1.amazonaws.com/backend_app:latest",
             "hostname": "backend",
             "essential": false,
             "memory": 128,
@@ -16,7 +16,7 @@
         },
         {
             "name": "frontend",
-            "image": "",
+            "image": "335237141106.dkr.ecr.us-east-1.amazonaws.com/frontend_app:latest",
             "hostname": "frontend",
             "essential": true,
             "memory": 128,
@@ -29,7 +29,7 @@
         },
         {
             "name": "backend_proxy",
-            "image": "",
+            "image": "335237141106.dkr.ecr.us-east-1.amazonaws.com/backend_proxy:latest",
             "hostname": "backend_proxy",
             "essential": false,
             "memory": 128,
