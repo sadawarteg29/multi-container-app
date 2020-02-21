@@ -23,17 +23,17 @@ script:
     - docker tag frontend_app:latest ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/frontend_app:latest  
 
 after_success:
-    - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/backend_app:latest
-    - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/backend_proxy:latest
-    - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/frontend_app:latest
+    - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/backend_app:latest
+    - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/backend_proxy:latest
+    - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/frontend_app:latest
 
 deploy:
     edge: true
     provider: elasticbeanstalk
-    region: "us-east-2"
+    region: "${REGION}"
     app: "Multi Container App"
     env: "MultiContainerApp-env"
-    bucket_name: "elasticbeanstalk-us-east-1-${AWS_ACCOUNT_ID}"
+    bucket_name: "elasticbeanstalk-${REGION}-${AWS_ACCOUNT_ID}"
     bucket_path: "Multi Container App"
     on:
         branch: master
